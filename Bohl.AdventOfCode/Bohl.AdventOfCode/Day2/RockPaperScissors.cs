@@ -2,11 +2,22 @@
 
 public class RockPaperScissors
 {
-    public List<Round> Rounds { get; set; }
+    public List<Round> Rounds { get; set; } = new();
 
-    public RockPaperScissors(string input)
+    public static RockPaperScissors ParseFromAnswers(string input)
     {
-        Rounds = ParseInput(input);
+        return new RockPaperScissors
+        {
+            Rounds = ParseRoundsFromAnswers(input)
+        };
+    }
+
+    public static RockPaperScissors ParseFromOutcome(string input)
+    {
+        return new RockPaperScissors
+        {
+            Rounds = ParseRoundsFromOutcome(input)
+        };
     }
 
     public int Score()
@@ -14,10 +25,17 @@ public class RockPaperScissors
         return Rounds.Select(r => r.Score()).Sum();
     }
 
-    private static List<Round> ParseInput(string input)
+    private static List<Round> ParseRoundsFromAnswers(string input)
     {
         return input.Split('\n')
-            .Select(round => new Round(round))
+            .Select(Round.ParseFromAnswers)
+            .ToList();
+    }
+
+    private static List<Round> ParseRoundsFromOutcome(string input)
+    {
+        return input.Split('\n')
+            .Select(Round.ParseFromOutcome)
             .ToList();
     }
 }
@@ -40,41 +58,74 @@ public class Round
 {
     public HandShape OpponentMove { get; set; }
     public HandShape AnswerMove { get; set; }
+    public Result Result { get; set; }
 
-    public Round(string input)
+    public static Round ParseFromAnswers(string input)
     {
-        (OpponentMove, AnswerMove) = ParseMoves(input);
+        var (opponentMove, answerMove) = ParseMoves(input);
+
+        var round = new Round
+        {
+            OpponentMove = opponentMove,
+            AnswerMove = answerMove
+        };
+        round.Result = round.CalculateResult();
+        return round;
+    }
+
+    public static Round ParseFromOutcome(string input)
+    {
+        var (opponentMove, outcome) = ParseMoveAndOutcome(input);
+
+        var round = new Round
+        {
+            OpponentMove = opponentMove,
+            Result = outcome
+        };
+        round.AnswerMove = round.CalculateAnswer();
+        return round;
     }
 
     public int Score()
     {
-        var resultScore =  Result() switch
+        var resultScore = CalculateResult() switch
         {
-            Day2.Result.Lose => 0,
-            Day2.Result.Draw => 3,
-            Day2.Result.Win => 6,
-            _ => throw new NotImplementedException()
+            Result.Lose => 0,
+            Result.Draw => 3,
+            Result.Win => 6,
         };
         var moveScore = (int)AnswerMove;
         return moveScore + resultScore;
     }
 
-    public Result Result()
+    public Result CalculateResult()
     {
-        if (OpponentMove == AnswerMove)
-        {
-            return Day2.Result.Draw;
-        }
+        if (OpponentMove == AnswerMove) return Result.Draw;
 
         return (OpponentMove, AnswerMove) switch
         {
-            (HandShape.Rock, HandShape.Paper) => Day2.Result.Win,
-            (HandShape.Rock, HandShape.Scissor) => Day2.Result.Lose,
-            (HandShape.Paper, HandShape.Rock) => Day2.Result.Lose,
-            (HandShape.Paper, HandShape.Scissor) => Day2.Result.Win,
-            (HandShape.Scissor, HandShape.Paper) => Day2.Result.Lose,
-            (HandShape.Scissor, HandShape.Rock) => Day2.Result.Win,
-            _ => throw new NotImplementedException()
+            (HandShape.Rock, HandShape.Paper) => Result.Win,
+            (HandShape.Rock, HandShape.Scissor) => Result.Lose,
+            (HandShape.Paper, HandShape.Rock) => Result.Lose,
+            (HandShape.Paper, HandShape.Scissor) => Result.Win,
+            (HandShape.Scissor, HandShape.Paper) => Result.Lose,
+            (HandShape.Scissor, HandShape.Rock) => Result.Win,
+        };
+    }
+
+    public HandShape CalculateAnswer()
+    {
+        if (Result is Result.Draw) return OpponentMove;
+
+        return (OpponentMove, Result) switch
+        {
+            (HandShape.Rock, Result.Win) => HandShape.Paper,
+            (HandShape.Rock, Result.Lose) => HandShape.Scissor,
+            (HandShape.Paper, Result.Lose) => HandShape.Rock,
+            (HandShape.Paper, Result.Win) => HandShape.Scissor,
+            (HandShape.Scissor, Result.Lose) => HandShape.Paper,
+            (HandShape.Scissor, Result.Win) => HandShape.Rock,
+            _ => throw new ArgumentOutOfRangeException()
         };
     }
 
@@ -98,8 +149,31 @@ public class Round
             case "C":
             case "Z":
                 return HandShape.Scissor;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
-        throw new NotImplementedException();
+    }
+
+    private static (HandShape, Result) ParseMoveAndOutcome(string input)
+    {
+        var (opponent, outcome) = input.Split(' ').ToArray();
+
+        return (ParseMove(opponent), ParseResult(outcome));
+    }
+
+    private static Result ParseResult(string input)
+    {
+        switch (input)
+        {
+            case "X":
+                return Result.Lose;
+            case "Y":
+                return Result.Draw;
+            case "Z":
+                return Result.Win;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 }
 

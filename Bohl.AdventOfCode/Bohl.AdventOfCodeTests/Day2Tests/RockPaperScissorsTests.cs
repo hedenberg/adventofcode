@@ -9,7 +9,7 @@ public class RockPaperScissorsTests
     {
         var input = Inputs.Day2Tests.Replace("\r", "");
 
-        var rockPaperScissor = new RockPaperScissors(input);
+        var rockPaperScissor = RockPaperScissors.ParseFromAnswers(input);
         var score = rockPaperScissor.Score();
         Assert.That(score == 15);
     }
@@ -19,7 +19,7 @@ public class RockPaperScissorsTests
     {
         var input = Inputs.Day2Challenge.Replace("\r", "");
 
-        var rockPaperScissor = new RockPaperScissors(input);
+        var rockPaperScissor = RockPaperScissors.ParseFromAnswers(input);
         var score = rockPaperScissor.Score();
         Assert.That(score == 10404);
     }
@@ -29,7 +29,8 @@ public class RockPaperScissorsTests
     {
         var input = Inputs.Day2Tests.Replace("\r", "");
 
-        var score = OneLineRockPaperScissors.ScoreFromOutcome(input);
+        var rockPaperScissor = RockPaperScissors.ParseFromOutcome(input);
+        var score = rockPaperScissor.Score();
         Assert.That(score == 12);
     }
 
@@ -38,7 +39,8 @@ public class RockPaperScissorsTests
     {
         var input = Inputs.Day2Challenge.Replace("\r", "");
 
-        var score = OneLineRockPaperScissors.ScoreFromOutcome(input);
+        var rockPaperScissor = RockPaperScissors.ParseFromOutcome(input);
+        var score = rockPaperScissor.Score();
         Assert.That(score == 10334);
     }
 }

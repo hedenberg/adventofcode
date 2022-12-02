@@ -14,6 +14,7 @@ public static class CalorieCounter
             .Select(elf => elf.Sum()).OrderByDescending(elf => elf);
         return elves.First();
     }
+
     public static int[] GetTopCalories(int top, string input)
     {
         var elves = input

@@ -92,7 +92,7 @@ public class Round
         {
             Result.Lose => 0,
             Result.Draw => 3,
-            Result.Win => 6,
+            Result.Win => 6
         };
         var moveScore = (int)AnswerMove;
         return moveScore + resultScore;
@@ -109,7 +109,7 @@ public class Round
             (HandShape.Paper, HandShape.Rock) => Result.Lose,
             (HandShape.Paper, HandShape.Scissor) => Result.Win,
             (HandShape.Scissor, HandShape.Paper) => Result.Lose,
-            (HandShape.Scissor, HandShape.Rock) => Result.Win,
+            (HandShape.Scissor, HandShape.Rock) => Result.Win
         };
     }
 

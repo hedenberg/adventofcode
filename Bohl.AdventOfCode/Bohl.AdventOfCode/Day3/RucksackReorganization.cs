@@ -4,13 +4,49 @@ namespace Bohl.AdventOfCode.Day3;
 
 public class RucksackReorganization
 {
+    public RucksackReorganization(List<ElfGroup> elfGroups)
+    {
+        ElfGroups = elfGroups;
+    }
+
+    public List<ElfGroup> ElfGroups { get; set; }
+
+    public static RucksackReorganization ParseInput(string input)
+    {
+        var rucksacks = input.Split('\n');
+
+        var elfGroups = new List<ElfGroup>();
+        for (var i = 0; i < rucksacks.Length; i = i + 3)
+            elfGroups.Add(ElfGroup.ParseInput(new List<string>
+            {
+                rucksacks[i],
+                rucksacks[i + 1],
+                rucksacks[i + 2]
+            }));
+
+        return new RucksackReorganization(elfGroups);
+    }
+
+    public int BadgePrioritySummary()
+    {
+        return ElfGroups.Select(g => g.BadgePriority()).Sum();
+    }
+}
+
+public class ElfGroup
+{
     public List<Rucksack> Rucksacks { get; set; }
 
-    public static RucksackReorganization ParseInputWithHalves(string input)
+    public static ElfGroup ParseInput(string input)
     {
-        var rucksacks = input.Split('\n').Select(r => new Rucksack(r)).ToList();
+        return ParseInput(input.Split('\n'));
+    }
 
-        return new RucksackReorganization
+    public static ElfGroup ParseInput(IEnumerable<string> input)
+    {
+        var rucksacks = input.Select(r => new Rucksack(r)).ToList();
+
+        return new ElfGroup
         {
             Rucksacks = rucksacks
         };
@@ -21,6 +57,23 @@ public class RucksackReorganization
         return Rucksacks.Select(r => r.MisplacedItemPriority()).Sum();
     }
 
+    public int BadgePriority()
+    {
+        var rucksacks = Rucksacks.AsEnumerable().ToArray();
+        var firstElf = rucksacks.ElementAt(0);
+        var secondElf = rucksacks.ElementAt(1);
+        var thirdElf = rucksacks.ElementAt(2);
+
+        var firstRucksack = firstElf.Items;
+        var secondRucksack = secondElf.Items;
+        var thirdRucksack = thirdElf.Items;
+
+        var badge = firstRucksack.First(item1
+            => secondRucksack.Any(item2 => item1.Priority() == item2.Priority())
+               && thirdRucksack.Any(item3 => item1.Priority() == item3.Priority()));
+
+        return badge.Priority();
+    }
 }
 
 public class Rucksack
@@ -33,6 +86,7 @@ public class Rucksack
 
     public Item[] Compartment1 { get; set; }
     public Item[] Compartment2 { get; set; }
+    public Item[] Items => Compartment1.Concat(Compartment2).ToArray();
 
     public int MisplacedItemPriority()
     {
@@ -41,7 +95,8 @@ public class Rucksack
 
     public override string ToString()
     {
-        return $"Compartment1:\n{string.Join('\n', Compartment1.ToList().Select(i => i.ToString()))}\nCompartment2:\n{string.Join('\n', Compartment2.ToList().Select(i => i.ToString()))}";
+        return
+            $"Compartment1:\n{string.Join('\n', Compartment1.ToList().Select(i => i.ToString()))}\nCompartment2:\n{string.Join('\n', Compartment2.ToList().Select(i => i.ToString()))}";
     }
 }
 
@@ -61,8 +116,8 @@ public class Item
         // A-Z 27-52
         if (_character >= 'A' && _character <= 'Z')
             result = _character - 'A' + 27;
-        else 
-            result =  _character - 'a' + 1;
+        else
+            result = _character - 'a' + 1;
         return result;
     }
 

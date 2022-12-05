@@ -10,4 +10,14 @@ public static class ArrayExtensions
         a0 = srcArray[0];
         a1 = srcArray[1];
     }
+
+    public static void Deconstruct<T>(this T[] srcArray, out T a0, out T a1, out T a2)
+    {
+        if (srcArray == null || srcArray.Length < 3)
+            throw new ArgumentException(nameof(srcArray));
+
+        a0 = srcArray[0];
+        a1 = srcArray[1];
+        a2 = srcArray[2];
+    }
 }

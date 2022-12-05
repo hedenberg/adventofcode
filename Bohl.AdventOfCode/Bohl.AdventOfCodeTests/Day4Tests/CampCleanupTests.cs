@@ -6,7 +6,7 @@ namespace Bohl.AdventOfCodeTests.Day4Tests;
 public class CampCleanupTests
 {
     [Test]
-    public void Day3_Challenge1_Test()
+    public void Day4_Challenge1_Test()
     {
         var campCleanup = Inputs.Day4Tests.Parse<CampCleanup>();
 
@@ -16,7 +16,7 @@ public class CampCleanupTests
     }
 
     [Test]
-    public void Day3_Challenge1()
+    public void Day4_Challenge1()
     {
         var campCleanup = Inputs.Day4Challenge.Parse<CampCleanup>();
 
@@ -26,7 +26,7 @@ public class CampCleanupTests
     }
 
     [Test]
-    public void Day3_Challenge2_Test()
+    public void Day4_Challenge2_Test()
     {
         var campCleanup = Inputs.Day4Tests.Parse<CampCleanup>();
 
@@ -36,7 +36,7 @@ public class CampCleanupTests
     }
 
     [Test]
-    public void Day3_Challenge2()
+    public void Day4_Challenge2()
     {
         var campCleanup = Inputs.Day4Challenge.Parse<CampCleanup>();
 

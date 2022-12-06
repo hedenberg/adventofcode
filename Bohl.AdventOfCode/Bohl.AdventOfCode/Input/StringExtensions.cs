@@ -10,12 +10,11 @@ public static class StringExtensions
             .ToList();
     }
 
-    public static List<string> Rows(this string input)
+    public static string[] Rows(this string input)
     {
         return input
             .Replace("\r", "")
-            .Split('\n')
-            .ToList();
+            .Split('\n');
     }
 
     public static T Parse<T>(this string input) where T : IParsable<T>

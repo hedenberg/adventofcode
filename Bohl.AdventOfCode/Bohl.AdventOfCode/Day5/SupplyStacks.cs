@@ -12,7 +12,7 @@ public class SupplyStacks : IParsable<SupplyStacks>
     {
         var (stacksSection, movesSection) = input.Sections().ToArray();
 
-        var stackRows = stacksSection.Rows();
+        var stackRows = stacksSection.Rows().ToList();
         stackRows.Reverse();
         var stacks = new List<Stack>();
         var indexRow = stackRows.First().ToCharArray();

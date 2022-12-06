@@ -8,8 +8,8 @@ public static class TuningTrouble
         var inputCharacters = input.ToCharArray();
         for (var index = 0; index < inputCharacters.Length; index++)
         {
-            var character = inputCharacters[index];
-            if (window.Scan(character)) return index + 1;
+            if (window.Scan(inputCharacters[index])) 
+                return index + 1;
         }
 
         throw new ArgumentOutOfRangeException("start-of-packet Marker not found");

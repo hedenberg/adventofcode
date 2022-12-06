@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using Bohl.AdventOfCode.Input;
 
 namespace Bohl.AdventOfCode.Day3;
 
@@ -13,7 +13,7 @@ public class RucksackReorganization
 
     public static RucksackReorganization ParseInput(string input)
     {
-        var rucksacks = input.Split('\n');
+        var rucksacks = input.Rows();
 
         var elfGroups = new List<ElfGroup>();
         for (var i = 0; i < rucksacks.Length; i = i + 3)
@@ -39,7 +39,7 @@ public class ElfGroup
 
     public static ElfGroup ParseInput(string input)
     {
-        return ParseInput(input.Split('\n'));
+        return ParseInput(input.Rows());
     }
 
     public static ElfGroup ParseInput(IEnumerable<string> input)
@@ -56,22 +56,18 @@ public class ElfGroup
     {
         return Rucksacks.Select(r => r.MisplacedItemPriority()).Sum();
     }
-
+    
     public int BadgePriority()
     {
-        var rucksacks = Rucksacks.AsEnumerable().ToArray();
-        var firstElf = rucksacks.ElementAt(0);
-        var secondElf = rucksacks.ElementAt(1);
-        var thirdElf = rucksacks.ElementAt(2);
+        var rucksacks = Rucksacks
+            .Select(rs => rs.Items)
+            .ToList();
 
-        var firstRucksack = firstElf.Items;
-        var secondRucksack = secondElf.Items;
-        var thirdRucksack = thirdElf.Items;
-
-        var badge = firstRucksack.First(item1
-            => secondRucksack.Any(item2 => item1.Priority() == item2.Priority())
-               && thirdRucksack.Any(item3 => item1.Priority() == item3.Priority()));
-
+        var badge = rucksacks
+            .First()
+            .First(item => rucksacks
+                .All(rucksack => rucksack
+                    .Any(i => i.Priority() == item.Priority())));
         return badge.Priority();
     }
 }

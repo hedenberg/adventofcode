@@ -24,19 +24,23 @@ public class RockPaperScissors
 
     public int Score()
     {
-        return Rounds.Select(r => r.Score()).Sum();
+        return Rounds
+            .Select(r => r.Score())
+            .Sum();
     }
 
     private static List<Round> ParseRoundsFromAnswers(string input)
     {
-        return input.Split('\n')
+        return input
+            .Rows()
             .Select(Round.ParseFromAnswers)
             .ToList();
     }
 
     private static List<Round> ParseRoundsFromOutcome(string input)
     {
-        return input.Split('\n')
+        return input
+            .Rows()
             .Select(Round.ParseFromOutcome)
             .ToList();
     }

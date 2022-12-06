@@ -2,12 +2,11 @@
 
 public static class StringExtensions
 {
-    public static List<string> Sections(this string input)
+    public static string[] Sections(this string input)
     {
         return input
             .Replace("\r", "")
-            .Split("\n\n")
-            .ToList();
+            .Split("\n\n");
     }
 
     public static string[] Rows(this string input)

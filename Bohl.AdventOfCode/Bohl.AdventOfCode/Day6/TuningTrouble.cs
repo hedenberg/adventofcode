@@ -30,7 +30,7 @@ public class Window
 
     public bool Scan(char character)
     {
-        if (Characters.Count == _length) 
+        if (Characters.Count == _length)
             Characters = Characters.Skip(1).ToList();
 
         if (Characters.Any(c => c == character))

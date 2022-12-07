@@ -56,7 +56,7 @@ public class ElfGroup
     {
         return Rucksacks.Select(r => r.MisplacedItemPriority()).Sum();
     }
-    
+
     public int BadgePriority()
     {
         var rucksacks = Rucksacks

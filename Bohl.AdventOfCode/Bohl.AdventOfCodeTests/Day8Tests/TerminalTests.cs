@@ -28,19 +28,20 @@ public class TreetopsTests
     [Test]
     public void Day8_Challenge2_Test()
     {
-        var treeTops = Inputs.Day8Challenge.Parse<Treetops>();
+        var treeTops = Inputs.Day8Tests.Parse<Treetops>();
+
+        var score = treeTops.TopScenicScore();
+
+        Assert.That(score == 8);
     }
 
-    //[Test]
-    //public void Day7_Challenge2()
-    //{
-    //    var totalDiskSpace = 70000000;
-    //    var requiredDiskSpace = 30000000;
+    [Test]
+    public void Day8_Challenge2()
+    {
+        var treeTops = Inputs.Day8Challenge.Parse<Treetops>();
 
-    //    var terminal = new Terminal(Inputs.Day7Challenge);
+        var score = treeTops.TopScenicScore();
 
-    //    var size = terminal.SmallestDirectoryMeetingRequirementSize(totalDiskSpace, requiredDiskSpace);
-
-    //    Assert.That(size == 366028);
-    //}
+        Assert.That(score == 330786);
+    }
 }

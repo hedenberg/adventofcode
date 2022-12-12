@@ -23,6 +23,7 @@ public class ProcessorTests
                 signalStrength += program.SignalStrength;
             }
         }
+
         Assert.That(signalStrength == 13140);
     }
 
@@ -44,20 +45,19 @@ public class ProcessorTests
                 signalStrength += program.SignalStrength;
             }
         }
+
         Assert.That(signalStrength == 14520);
     }
 
     [Test]
     public void Day4_Challenge2_Test()
     {
-
         //Assert.That(containedRanges == 4);
     }
 
     [Test]
     public void Day4_Challenge2()
     {
-
         //Assert.That(containedRanges == 938);
     }
 }

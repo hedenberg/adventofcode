@@ -7664,12 +7664,15 @@ $ cd ..
 $ cd vsztsjfh
 $ ls
 215479 ffwlcrwb";
+
     public const string Day8Tests = @"30373
 25512
 65332
 33549
 35390";
-    public const string Day8Challenge = @"002220021312231312222033343421330303240001434141231331323404031022114013434333010230221020221020022
+
+    public const string Day8Challenge =
+        @"002220021312231312222033343421330303240001434141231331323404031022114013434333010230221020221020022
 121122120202012020121043013102221221435521112422443242343123513341010302410221342010223030013102200
 000102113102200232304033323331230042243225545423222145155353323244444103030341114102200110230210210
 210000210011313230124421403131035424212553341224354235111554525424232312243334330011232213102110221
@@ -7786,6 +7789,7 @@ R 17
 D 10
 L 25
 U 20";
+
     public const string Day9Challenge = @"R 1
 L 1
 U 1
@@ -9790,6 +9794,7 @@ U 16";
     public const string Day10Test1 = @"noop
 addx 3
 addx -5";
+
     public const string Day10Test2 = @"addx 15
 addx -11
 addx 6
@@ -9936,6 +9941,7 @@ addx -11
 noop
 noop
 noop";
+
     public const string Day10Challenge = @"noop
 noop
 addx 5
@@ -10083,4 +10089,87 @@ noop
 noop
 noop";
 
+    public const string Day11Tests = @"Monkey 0:
+  Starting items: 79, 98
+  Operation: new = old * 19
+  Test: divisible by 23
+    If true: throw to monkey 2
+    If false: throw to monkey 3
+
+Monkey 1:
+  Starting items: 54, 65, 75, 74
+  Operation: new = old + 6
+  Test: divisible by 19
+    If true: throw to monkey 2
+    If false: throw to monkey 0
+
+Monkey 2:
+  Starting items: 79, 60, 97
+  Operation: new = old * old
+  Test: divisible by 13
+    If true: throw to monkey 1
+    If false: throw to monkey 3
+
+Monkey 3:
+  Starting items: 74
+  Operation: new = old + 3
+  Test: divisible by 17
+    If true: throw to monkey 0
+    If false: throw to monkey 1";
+
+    public const string Day11Challenge = @"Monkey 0:
+  Starting items: 72, 64, 51, 57, 93, 97, 68
+  Operation: new = old * 19
+  Test: divisible by 17
+    If true: throw to monkey 4
+    If false: throw to monkey 7
+
+Monkey 1:
+  Starting items: 62
+  Operation: new = old * 11
+  Test: divisible by 3
+    If true: throw to monkey 3
+    If false: throw to monkey 2
+
+Monkey 2:
+  Starting items: 57, 94, 69, 79, 72
+  Operation: new = old + 6
+  Test: divisible by 19
+    If true: throw to monkey 0
+    If false: throw to monkey 4
+
+Monkey 3:
+  Starting items: 80, 64, 92, 93, 64, 56
+  Operation: new = old + 5
+  Test: divisible by 7
+    If true: throw to monkey 2
+    If false: throw to monkey 0
+
+Monkey 4:
+  Starting items: 70, 88, 95, 99, 78, 72, 65, 94
+  Operation: new = old + 7
+  Test: divisible by 2
+    If true: throw to monkey 7
+    If false: throw to monkey 5
+
+Monkey 5:
+  Starting items: 57, 95, 81, 61
+  Operation: new = old * old
+  Test: divisible by 5
+    If true: throw to monkey 1
+    If false: throw to monkey 6
+
+Monkey 6:
+  Starting items: 79, 99
+  Operation: new = old + 2
+  Test: divisible by 11
+    If true: throw to monkey 3
+    If false: throw to monkey 1
+
+Monkey 7:
+  Starting items: 68, 98, 62
+  Operation: new = old + 3
+  Test: divisible by 13
+    If true: throw to monkey 5
+    If false: throw to monkey 6";
 }

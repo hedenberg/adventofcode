@@ -29,7 +29,7 @@ public class Processor
             operation.Cycles--;
 
             SignalStrength = ClockCycle * RegisterX;
-            var windowCenter = (ClockCycle-1) % 40;
+            var windowCenter = (ClockCycle - 1) % 40;
             var lower = RegisterX - 1;
             var upper = RegisterX + 1;
             var spriteHit = windowCenter >= lower && windowCenter <= upper;

@@ -1,4 +1,5 @@
-﻿using Bohl.AdventOfCode.Day2;
+﻿using Bohl.AdventOfCode;
+using Bohl.AdventOfCode.Day2;
 
 namespace Bohl.AdventOfCodeTests.Day2Tests;
 

@@ -10,7 +10,7 @@ public partial class Rope : IParsable<Rope>
         Start = new Position
         {
             X = 0,
-            Y = 0,
+            Y = 0
         };
         Head = new Knot
         {
@@ -18,7 +18,7 @@ public partial class Rope : IParsable<Rope>
             Position = new Position
             {
                 X = 0,
-                Y = 0,
+                Y = 0
             },
             NextKnot = Knot.Initialize(1, 9)
         };
@@ -27,39 +27,6 @@ public partial class Rope : IParsable<Rope>
     public required List<Motion> Motions { get; set; }
     public Position Start { get; set; }
     public Knot Head { get; set; }
-
-    public void PerformMotions()
-    {
-        foreach (var motion in Motions)
-        {
-            //PrintMotion(motion);
-            Head.PerformMotion(motion);
-
-            //while (motion.Count != 0)
-            //{
-            //    Head.PerformMotion(new Motion
-            //    {
-            //        Direction = motion.Direction,
-            //        Count = 1
-            //    });
-
-            //    motion.Count--;
-            //    PrintMap();
-            //}
-
-        }
-        //PrintPath("9");
-    }
-
-    public int GetVisits(string name)
-    {
-        var knots = GetKnots();
-        var knot = knots.Single(k => k.Name == name);
-        knot.Positions.Add((knot.Position.X, knot.Position.Y));
-        var visits = knot.Positions.Distinct();
-
-        return visits.Count();
-    }
 
     public static Rope Parse(string input, IFormatProvider? provider)
     {
@@ -77,13 +44,45 @@ public partial class Rope : IParsable<Rope>
     {
         throw new NotImplementedException();
     }
+
+    public void PerformMotions()
+    {
+        foreach (var motion in Motions)
+            //PrintMotion(motion);
+            Head.PerformMotion(motion);
+        //while (motion.Count != 0)
+        //{
+        //    Head.PerformMotion(new Motion
+        //    {
+        //        Direction = motion.Direction,
+        //        Count = 1
+        //    });
+        //    motion.Count--;
+        //    PrintMap();
+        //}
+        //PrintPath("9");
+    }
+
+    public int GetVisits(string name)
+    {
+        var knots = GetKnots();
+        var knot = knots.Single(k => k.Name == name);
+        knot.Positions.Add((knot.Position.X, knot.Position.Y));
+        var visits = knot.Positions.Distinct();
+
+        return visits.Count();
+    }
 }
 
 public class Knot
 {
+    public required string Name { get; set; }
+    public required Position Position { get; set; }
+    public Knot? NextKnot { get; set; }
+    public List<(int, int)> Positions { get; set; } = new();
+
     public static Knot Initialize(int i, int max)
     {
-
         return new Knot
         {
             Name = i.ToString(),
@@ -92,7 +91,7 @@ public class Knot
                 X = 0,
                 Y = 0
             },
-            NextKnot = i < max ? Knot.Initialize(++i, max) : null
+            NextKnot = i < max ? Initialize(++i, max) : null
         };
     }
 
@@ -128,8 +127,8 @@ public class Knot
     {
         if (Name == "1")
         {
-
         }
+
         Positions.Add((Position.X, Position.Y));
         var diffX = position.X - Position.X;
         var diffY = position.Y - Position.Y;
@@ -140,28 +139,16 @@ public class Knot
         if (Math.Abs(diffX) > 1)
         {
             Position.X += vx;
-            if (Math.Abs(diffY) > 0)
-            {
-                Position.Y += vy;
-            }
+            if (Math.Abs(diffY) > 0) Position.Y += vy;
             NextKnot?.React(Position);
         }
         else if (Math.Abs(diffY) > 1)
         {
             Position.Y += vy;
-            if (Math.Abs(diffX) > 0)
-            {
-                Position.X += vx;
-            }
+            if (Math.Abs(diffX) > 0) Position.X += vx;
             NextKnot?.React(Position);
         }
-
     }
-
-    public required string Name { get; set; }
-    public required Position Position { get; set; }
-    public Knot? NextKnot { get; set; }
-    public List<(int,int)> Positions { get; set; } = new();
 }
 
 public class Position
@@ -174,8 +161,8 @@ public partial class Rope
 {
     public int MapWidth { get; set; } = 1;
     public int MapHeight { get; set; } = 1;
-    public int MapMinX { get; set; } = 0;
-    public int MapMinY { get; set; } = 0;
+    public int MapMinX { get; set; }
+    public int MapMinY { get; set; }
 
     public List<Knot> GetKnots()
     {
@@ -220,18 +207,18 @@ public partial class Rope
                 if (Start.X == x && Start.Y == y)
                     character = "s";
                 foreach (var k in knots.Where(k => k.Name != "H").OrderByDescending(k => k.Name))
-                {
                     if (k.Position.X == x && k.Position.Y == y)
                         character = k.Name;
-                }
 
                 var h = knots.Single(k => k.Name == "H");
                 if (h.Position.X == x && h.Position.Y == y)
                     character = h.Name;
                 Trace.Write(character);
             }
+
             Trace.Write("\n");
         }
+
         Trace.Write("\n");
     }
 
@@ -246,16 +233,15 @@ public partial class Rope
             {
                 var character = ".";
 
-                if (knot.Positions.Any(p => p.Item1 == x && p.Item2 == y))
-                {
-                    character = "#";
-                }
+                if (knot.Positions.Any(p => p.Item1 == x && p.Item2 == y)) character = "#";
                 if (Start.X == x && Start.Y == y)
                     character = "s";
                 Trace.Write(character);
             }
+
             Trace.Write("\n");
         }
+
         Trace.Write("\n");
     }
 

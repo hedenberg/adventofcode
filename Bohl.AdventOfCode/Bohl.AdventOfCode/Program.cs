@@ -6,7 +6,6 @@ using Bohl.AdventOfCode.Day10;
 Console.WriteLine("Advent of Code 2022");
 
 Console.Write("Day #: ");
-
 var val = Console.ReadLine();
 
 if (val == "10")

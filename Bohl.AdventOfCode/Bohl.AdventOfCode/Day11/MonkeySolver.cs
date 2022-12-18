@@ -1,4 +1,5 @@
-﻿using Bohl.AdventOfCode.Input;
+﻿using System.Numerics;
+using Bohl.AdventOfCode.Input;
 
 namespace Bohl.AdventOfCode.Day11;
 
@@ -12,6 +13,11 @@ public class MonkeySolver : IParsable<MonkeySolver>
 
         var monkeys = sections.Select(section => section.Parse<Monkey>()).ToList();
 
+        foreach (var monkeyItem in monkeys.SelectMany(monkey => monkey.Items))
+        {
+            monkeyItem.SetupWorryLevels(monkeys);
+        }
+
         return new MonkeySolver
         {
             Monkeys = monkeys
@@ -23,17 +29,23 @@ public class MonkeySolver : IParsable<MonkeySolver>
         throw new NotImplementedException();
     }
 
-    public void PerformRounds()
+    public void PerformRounds(int rounds = 20, bool divideByThree = true)
     {
-        for (var i = 0; i < 20; i++)
+        //Console.WriteLine("");
+        for (var i = 0; i < rounds; i++)
+        {
+            //Console.SetCursorPosition(0, Console.CursorTop - 1);
+            //Console.WriteLine($"Round # {i}");
             foreach (var monkey in Monkeys)
             {
-                monkey.InspectItems();
+                monkey.InspectItems(divideByThree);
+                monkey.TestItems();
                 monkey.ThrowItems(Monkeys);
             }
+        }
     }
 
-    public int MonkeyBusiness()
+    public BigInteger MonkeyBusiness()
     {
         var monkeys = Monkeys
             .OrderByDescending(m => m.Inspections)
@@ -50,11 +62,11 @@ public class Monkey : IParsable<Monkey>
     public int Id { get; set; }
     public required List<Item> Items { get; set; }
     public required Operation Operation { get; set; }
-    public int Divider { get; set; }
+    public BigInteger Divider { get; set; }
     public int TargetTrue { get; set; }
     public int TargetFalse { get; set; }
 
-    public int Inspections { get; set; }
+    public BigInteger Inspections { get; set; }
 
     public static Monkey Parse(string input, IFormatProvider? provider)
     {
@@ -69,7 +81,7 @@ public class Monkey : IParsable<Monkey>
         var operation = operationInput.Parse<Operation>();
 
         var (_, dividerString) = rows[3].Split("  Test: divisible by ");
-        var divider = int.Parse(dividerString);
+        var divider = BigInteger.Parse(dividerString);
 
         var targetTrue = int.Parse(rows[4].Last().ToString());
 
@@ -91,13 +103,43 @@ public class Monkey : IParsable<Monkey>
         throw new NotImplementedException();
     }
 
-    public void InspectItems()
+    public void InspectItems(bool divideByThree = true)
     {
+        var threads = new List<Thread>();
         foreach (var item in Items)
         {
             Inspections++;
-            item.Inspect(Operation);
-            item.WorryLevel /= 3;
+
+            var thread = new Thread(() =>
+            {
+                item.Inspect(Operation, divideByThree);
+            });
+            thread.Start();
+            threads.Add(thread);
+        }
+
+        foreach (var thread in threads)
+        {
+            thread.Join();
+        }
+    }
+
+    public void TestItems()
+    {
+        var threads = new List<Thread>();
+        foreach (var item in Items)
+        {
+            var thread = new Thread(() =>
+            {
+                item.TestResult = item.WorryLevels[Divider] % Divider == 0;
+            });
+            thread.Start();
+            threads.Add(thread);
+        }
+
+        foreach (var thread in threads)
+        {
+            thread.Join();
         }
     }
 
@@ -107,7 +149,7 @@ public class Monkey : IParsable<Monkey>
         var targetFalse = monkeys.Single(m => m.Id == TargetFalse);
 
         foreach (var item in Items)
-            if (item.WorryLevel % Divider == 0)
+            if (item.TestResult)
                 targetTrue.Items.Add(item);
             else
                 targetFalse.Items.Add(item);
@@ -117,19 +159,22 @@ public class Monkey : IParsable<Monkey>
 
     public override string ToString()
     {
-        return $"Monkey {Id}: {string.Join(", ", Items)}";
+        return $"Monkey {Id}: inspected items {Inspections} times.";
     }
 }
 
 public class Item : IParsable<Item>
 {
-    public long WorryLevel { get; set; }
+    public BigInteger OriginalWorryLevel { get; set; }
+    public bool TestResult { get; set; }
+
+    public Dictionary<BigInteger, BigInteger> WorryLevels { get; set; } = new ();
 
     public static Item Parse(string s, IFormatProvider? provider)
     {
         return new Item
         {
-            WorryLevel = int.Parse(s)
+            OriginalWorryLevel = BigInteger.Parse(s),
         };
     }
 
@@ -138,14 +183,36 @@ public class Item : IParsable<Item>
         throw new NotImplementedException();
     }
 
-    public void Inspect(Operation operation)
+    public void SetupWorryLevels(List<Monkey> monkeys)
     {
-        WorryLevel = operation.Calculate(WorryLevel);
+        foreach (var monkey in monkeys)
+        {
+            WorryLevels.Add(monkey.Divider, OriginalWorryLevel);
+        }
+    }
+
+    public void Inspect(Operation operation, bool divideByThree = true)
+    {
+        foreach (var (divider, worryLevel) in WorryLevels)
+        {
+            var updatedWorryLevel = operation.Calculate(worryLevel);
+            if (divideByThree)
+            {
+                updatedWorryLevel /= 3;
+            }
+            else
+            {
+                updatedWorryLevel %= divider;
+            }
+            WorryLevels[divider] = updatedWorryLevel;
+        }
+
+        //OriginalWorryLevel = operation.Calculate(OriginalWorryLevel);
     }
 
     public override string ToString()
     {
-        return $"{WorryLevel}";
+        return $"{OriginalWorryLevel}";
     }
 }
 
@@ -169,9 +236,9 @@ public class Operation : IParsable<Operation>
         throw new NotImplementedException();
     }
 
-    public long Calculate(long worryLevel)
+    public BigInteger Calculate(BigInteger worryLevel)
     {
-        var secondValue = Value == "old" ? worryLevel : int.Parse(Value);
+        var secondValue = Value == "old" ? worryLevel : BigInteger.Parse(Value);
 
         return Operator switch
         {

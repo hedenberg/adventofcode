@@ -20,8 +20,8 @@ public class MonkeyTests
 
         Assert.IsNotNull(monkey);
         Assert.That(monkey.Id == 0);
-        Assert.That(monkey.Items[0].WorryLevel == 79);
-        Assert.That(monkey.Items[1].WorryLevel == 98);
+        Assert.That(monkey.Items[0].OriginalWorryLevel == 79);
+        Assert.That(monkey.Items[1].OriginalWorryLevel == 98);
         Assert.That(monkey.Operation.Operator == "*");
         Assert.That(monkey.Operation.Value == "19");
         Assert.That(monkey.Divider == 23);
@@ -50,4 +50,17 @@ public class MonkeyTests
         var inspections = monkeySolver.MonkeyBusiness();
         Assert.That(inspections == 99852);
     }
+
+    //[Test]
+    //public void Day11_Test2()
+    //{
+    //    var monkeySolver = Inputs.Day11Tests.Parse<MonkeySolver>();
+
+    //    monkeySolver.PerformRounds(1000, false);
+
+    //    var monkeys = monkeySolver.Monkeys;
+
+    //    var inspections = monkeySolver.MonkeyBusiness();
+    //    Assert.That(inspections == 2713310158);
+    //}
 }

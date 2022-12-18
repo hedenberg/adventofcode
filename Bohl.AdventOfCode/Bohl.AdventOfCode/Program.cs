@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Diagnostics;
 using Bohl.AdventOfCode;
 using Bohl.AdventOfCode.Day10;
 using Bohl.AdventOfCode.Day11;
@@ -7,8 +8,19 @@ using Bohl.AdventOfCode.Input;
 
 Console.WriteLine("Advent of Code 2022");
 
-Console.Write("Day #: ");
-var val = Console.ReadLine();
+const bool debug = true;
+
+var val = "";
+if (debug)
+{
+    val = "12";
+}
+else
+{
+    Console.Write("Day #: ");
+    val = Console.ReadLine();
+}
+Console.WriteLine();
 
 if (val == "10")
 {
@@ -61,4 +73,9 @@ if (val == "11")
     var result = monkeySolver.MonkeyBusiness();
     Console.WriteLine($"Level of monkey business: {result}");
     Console.WriteLine("========");
+}
+
+if (val == "12")
+{
+    Bohl.AdventOfCode.Day12.Program.Run();
 }

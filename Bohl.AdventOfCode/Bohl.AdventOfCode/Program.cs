@@ -1,9 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Diagnostics;
 using Bohl.AdventOfCode;
 using Bohl.AdventOfCode.Day10;
 using Bohl.AdventOfCode.Day11;
+using Bohl.AdventOfCode.Day14;
 using Bohl.AdventOfCode.Input;
 
 Console.WriteLine("Advent of Code 2022");
@@ -13,7 +13,7 @@ const bool debug = true;
 var val = "";
 if (debug)
 {
-    val = "12";
+    val = "14";
 }
 else
 {
@@ -78,4 +78,9 @@ if (val == "11")
 if (val == "12")
 {
     Bohl.AdventOfCode.Day12.Program.Run();
+}
+
+if (val == "14")
+{
+    SandProgram.Run();
 }

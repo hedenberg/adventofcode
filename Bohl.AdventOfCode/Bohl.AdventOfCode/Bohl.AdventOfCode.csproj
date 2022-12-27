@@ -11,4 +11,8 @@
     <PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Day14\v2\" />
+  </ItemGroup>
+
 </Project>

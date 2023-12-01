@@ -4,6 +4,7 @@ using Bohl.AdventOfCode;
 using Bohl.AdventOfCode.Day10;
 using Bohl.AdventOfCode.Day11;
 using Bohl.AdventOfCode.Day14;
+using Bohl.AdventOfCode.Day15;
 using Bohl.AdventOfCode.Input;
 
 Console.WriteLine("Advent of Code 2022");
@@ -13,7 +14,7 @@ const bool debug = true;
 var val = "";
 if (debug)
 {
-    val = "14";
+    val = "15";
 }
 else
 {
@@ -83,4 +84,9 @@ if (val == "12")
 if (val == "14")
 {
     SandProgram.Run();
+}
+
+if (val == "15")
+{
+    ZoneProgram.Run();
 }

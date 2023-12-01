@@ -4,9 +4,9 @@ using Bohl.AdventOfCode.Input;
 
 namespace Monitor
 {
-    public partial class Form1 : Form
+    public partial class Day14 : Form
     {
-        public Form1()
+        public Day14()
         {
             InitializeComponent();
         }

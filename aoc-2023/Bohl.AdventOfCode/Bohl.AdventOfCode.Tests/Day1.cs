@@ -15,12 +15,7 @@ treb7uchet";
 
         var rows = testString.Rows();
 
-        var sum = 0;
-        foreach (var row in rows)
-        {
-            var digits = CalibrationValue.GetLineDigits(row);
-            sum += digits;
-        }
+        var sum = Trebuchet.Sum(rows.ToList());
 
         sum.Should().Be(142);
     }
@@ -31,24 +26,9 @@ treb7uchet";
 
         var rows = TestString.Rows();
 
-        var sum = 0;
-        foreach (var row in rows)
-        {
-            var digits = CalibrationValue.GetLineDigits(row);
-            sum += digits;
-        }
+        var sum = Trebuchet.Sum(rows.ToList());
 
         sum.Should().Be(54968);
-    }
-
-    [Fact]
-    public void Day1_PartTwo_Example_FirstRow()
-    {
-        var testString = @"two1nine";
-
-        var firstNumber = CalibrationValue.FirstNumber(testString);
-
-        firstNumber.Should().Be(2);
     }
 
     [Fact]
@@ -64,12 +44,7 @@ zoneight234
 
         var rows = testString.Rows();
 
-        var sum = 0;
-        foreach (var row in rows)
-        {
-            var digits = CalibrationValue.GetLineNumbers(row);
-            sum += digits;
-        }
+        var sum = Trebuchet.SumWithWords(rows.ToList());
 
         sum.Should().Be(281);
     }
@@ -79,12 +54,7 @@ zoneight234
     {
         var rows = TestString.Rows();
 
-        var sum = 0;
-        foreach (var row in rows)
-        {
-            var digits = CalibrationValue.GetLineNumbers(row);
-            sum += digits;
-        }
+        var sum = Trebuchet.SumWithWords(rows.ToList());
 
         sum.Should().Be(54094);
     }

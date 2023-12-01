@@ -6,7 +6,7 @@ namespace Bohl.AdventOfCode.Tests;
 public class Day1
 {
     [Fact]
-    public void Day1_First_Example()
+    public void Day1_PartOne_Example()
     {
         var testString = @"1abc2
 pqr3stu8vwx
@@ -26,9 +26,70 @@ treb7uchet";
     }
 
     [Fact]
-    public void Day1_First_Test()
+    public void Day1_PartOne_Test()
     {
-        var testString = @"3fiveone
+
+        var rows = TestString.Rows();
+
+        var sum = 0;
+        foreach (var row in rows)
+        {
+            var digits = CalibrationValue.GetLineDigits(row);
+            sum += digits;
+        }
+
+        sum.Should().Be(54968);
+    }
+
+    [Fact]
+    public void Day1_PartTwo_Example_FirstRow()
+    {
+        var testString = @"two1nine";
+
+        var firstNumber = CalibrationValue.FirstNumber(testString);
+
+        firstNumber.Should().Be(2);
+    }
+
+    [Fact]
+    public void Day1_PartTwo_Example()
+    {
+        var testString = @"two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen";
+
+        var rows = testString.Rows();
+
+        var sum = 0;
+        foreach (var row in rows)
+        {
+            var digits = CalibrationValue.GetLineNumbers(row);
+            sum += digits;
+        }
+
+        sum.Should().Be(281);
+    }
+
+    [Fact]
+    public void Day1_PartTwo_Test()
+    {
+        var rows = TestString.Rows();
+
+        var sum = 0;
+        foreach (var row in rows)
+        {
+            var digits = CalibrationValue.GetLineNumbers(row);
+            sum += digits;
+        }
+
+        sum.Should().Be(54094);
+    }
+
+    private const string TestString = @"3fiveone
 eightnineseventwo1seven
 9h1xcrcggtwo38
 nine4pvtl
@@ -1028,16 +1089,4 @@ nine9ninesix6xmgbsgfmpgxkzgpzlxqnjsqhr
 fourknflljrbrq63five
 42onef6seven
 39njjvzt7threetkccstz";
-
-        var rows = testString.Rows();
-
-        var sum = 0;
-        foreach (var row in rows)
-        {
-            var digits = CalibrationValue.GetLineDigits(row);
-            sum += digits;
-        }
-
-        sum.Should().Be(54968);
-    }
 }

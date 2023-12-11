@@ -16,6 +16,20 @@ public static class StringExtensions
             .Split('\n');
     }
 
+    public static char[][] Cells(this string input)
+    {
+        var rows = input.Rows();
+
+        var cells = new List<char[]>();
+
+        foreach (var row in rows)
+        {
+            cells.Add(row.ToCharArray());
+        }
+
+        return cells.ToArray();
+    }
+
     public static T Parse<T>(this string input) where T : IParsable<T>
     {
         return T.Parse(input, null);

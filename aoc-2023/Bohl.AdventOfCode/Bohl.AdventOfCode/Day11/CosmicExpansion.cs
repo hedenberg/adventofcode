@@ -4,32 +4,28 @@ namespace Bohl.AdventOfCode.Day11;
 
 internal class CosmicExpansion
 {
-    public static int Sum(string input)
+    public static long Sum(string input, long expansion = 2)
     {
         var cells = input.CharRows();
 
-        Expand(cells);
+        //Expand(cells);
 
-        //DebugPrint(cells);
+        var expansionRows = ExpansionRows(cells);
+        var expansionColumns = ExpansionColumns(cells);
 
         var galaxies = Galaxies(cells);
 
-        //DebugPrint(cells, galaxies);
-
-        var sum = 0;
-
-        var pairs = 0;
+        var sum = 0L;
 
         if (galaxies.Any())
         {
-            for (int i = 0; i < galaxies.Count - 1; i++)
+            for (var i = 0; i < galaxies.Count - 1; i++)
             {
                 var start = galaxies[i];
-                for (int j = i; j < galaxies.Count; j++)
+                for (var j = i; j < galaxies.Count; j++)
                 {
-                    pairs++;
                     var target = galaxies[j];
-                    sum += CalculateDistance(start, target);
+                    sum += CalculateDistance(start, target, expansion, expansionRows, expansionColumns);
                 }
             }
         }
@@ -37,23 +33,26 @@ internal class CosmicExpansion
         return sum;
     }
 
-    private static int CalculateDistance(Galaxy start, Galaxy target)
+    private static long CalculateDistance(Galaxy start, Galaxy target, long expansion, List<int> rows, List<int> columns)
     {
         // Assumptions: ordered by Y (target.y >= start.y)
         // X can be whatever
 
-        var distance = 0;
+        var distance = 0L;
 
         if (start.X > target.X)
         {
-            distance += start.X - target.X;
+            var expansionColumns = columns.Where(x => x > target.X && x < start.X).ToList();
+            distance += start.X - target.X + expansionColumns.Count() * (expansion - 1);
         }
         else
         {
-            distance += target.X - start.X;
+            var expansionColumns = columns.Where(x => x > start.X && x < target.X).ToList();
+            distance += target.X - start.X + expansionColumns.Count() * (expansion - 1);
         }
 
-        distance += target.Y - start.Y;
+        var expansionRows = rows.Where(y => y > start.Y && y < target.Y).ToList();
+        distance += target.Y - start.Y + expansionRows.Count() * (expansion - 1);
 
         return distance;
     }
@@ -61,10 +60,10 @@ internal class CosmicExpansion
     private static List<Galaxy> Galaxies(List<List<char>> cells)
     {
         var galaxies = new List<Galaxy>();
-        for (int y = 0; y < cells.Count; y++)
+        for (var y = 0; y < cells.Count; y++)
         {
             var row = cells[y];
-            for (int x = 0; x < row.Count; x++)
+            for (var x = 0; x < row.Count; x++)
             {
                 var symbol = row[x];
 
@@ -78,7 +77,7 @@ internal class CosmicExpansion
         return galaxies;
     }
 
-    private static void Expand(List<List<char>> cells)
+    private static List<int> ExpansionRows(List<List<char>> cells)
     {
         var emptyRows = new List<int>();
         for (var y = 0; y < cells.Count; y++)
@@ -90,6 +89,11 @@ internal class CosmicExpansion
             }
         }
 
+        return emptyRows;
+    }
+
+    private static List<int> ExpansionColumns(List<List<char>> cells)
+    {
         var emptyColumns = new List<int>();
         for (var x = 0; x < cells.First().Count; x++)
         {
@@ -99,6 +103,15 @@ internal class CosmicExpansion
                 emptyColumns.Add(x);
             }
         }
+
+        return emptyColumns;
+    }
+
+    private static void Expand(List<List<char>> cells)
+    {
+        var emptyRows = ExpansionRows(cells);
+
+        var emptyColumns = ExpansionColumns(cells);
 
         for (var i = 0; i < emptyRows.Count; i++)
         {
@@ -114,39 +127,6 @@ internal class CosmicExpansion
                 row.Insert(emptyColumn + i, '.');
             }
         }
-    }
-
-    private static void DebugPrint(List<List<char>> cells)
-    {
-        Debug.WriteLine("");
-
-        foreach (var row in cells)
-        {
-            Debug.WriteLine(new string(row.ToArray()));
-        }
-    }
-
-    private static void DebugPrint(List<List<char>> cells, List<Galaxy> galaxies)
-    {
-        var galaxyCells = new List<List<char>>(cells);
-
-        if (galaxies.Count < 10)
-        {
-            for (int y = 0; y < galaxyCells.Count; y++)
-            {
-                var row = galaxyCells[y];
-                for (int x = 0; x < row.Count; x++)
-                {
-                    var galaxy = galaxies.SingleOrDefault(g => g.X == x && g.Y == y);
-                    if (galaxy != null)
-                    {
-                        row[x] = char.Parse(galaxy.Id.ToString());
-                    }
-                }
-            }
-        }
-
-        DebugPrint(galaxyCells);
     }
 }
 

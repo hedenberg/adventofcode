@@ -18,27 +18,32 @@ public class Day11
     {
         var val = CosmicExpansion.Sum(PuzzleInput);
 
-        val.Should().Be(6806);
+        val.Should().Be(9681886);
     }
 
     [Fact]
-    public void Day11_PartTwo_Example()
+    public void Day11_PartTwo_Example1()
     {
-        var cells = Example2Input.RowsAndColumns();
+        var val = CosmicExpansion.Sum(Example1Input, 10);
 
-        var val = 1;
+        val.Should().Be(1030);
+    }
 
-        val.Should().Be(4);
+    [Fact]
+    public void Day11_PartTwo_Example2()
+    {
+        var val = CosmicExpansion.Sum(Example1Input, 100);
+
+        val.Should().Be(8410);
     }
 
     [Fact]
     public void Day11_PartTwo_Test()
     {
-        var cells = PuzzleInput.RowsAndColumns();
+        var val = CosmicExpansion.Sum(PuzzleInput, 1000000);
 
-        var val = 1;
-
-        val.Should().Be(903);
+        val.Should().BeLessThan(791134890760);
+        val.Should().Be(791134099634);
     }
 
     private const string Example1Input = @"...#......

@@ -16,7 +16,7 @@ public static class StringExtensions
             .Split('\n');
     }
 
-    public static char[][] Cells(this string input)
+    public static char[][] RowsAndColumns(this string input)
     {
         var rows = input.Rows();
 
@@ -28,6 +28,38 @@ public static class StringExtensions
         }
 
         return cells.ToArray();
+    }
+
+    public static List<List<char>> CharRows(this string input)
+    {
+        var rows = input.Rows();
+
+        return rows.Select(row => row.ToCharArray().ToList()).ToList();
+    }
+
+    public static char[,] Cells(this string input)
+    {
+        var rows = input.Rows();
+        var height = rows.Length;
+        if (height == 0)
+        {
+            return new char[0,0];
+        }
+        var width = rows[0].Length;
+        var cells = new char[height,width];
+
+        for (var r = 0; r < rows.Length; r++)
+        {
+            var row = rows[r];
+            var rowCells = row.ToCharArray();
+            for (var c = 0; c < rowCells.Length; c++)
+            {
+                var cell = rowCells[c];
+                cells[r,c] = cell;
+            }
+        }
+
+        return cells;
     }
 
     public static T Parse<T>(this string input) where T : IParsable<T>

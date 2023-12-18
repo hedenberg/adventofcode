@@ -8,7 +8,7 @@ public class Day10
     [Fact]
     public void Day10_PartOne_Example1()
     {
-        var cells = Example1Input.Cells();
+        var cells = Example1Input.RowsAndColumns();
 
         var val = PipeMaze.StepsToFarthestPoint(cells);
 
@@ -18,7 +18,7 @@ public class Day10
     [Fact]
     public void Day10_PartOne_Example2()
     {
-        var cells = Example2Input.Cells();
+        var cells = Example2Input.RowsAndColumns();
 
         var val = PipeMaze.StepsToFarthestPoint(cells);
 
@@ -28,7 +28,7 @@ public class Day10
     [Fact]
     public void Day10_PartOne_Test()
     {
-        var cells = PuzzleInput.Cells();
+        var cells = PuzzleInput.RowsAndColumns();
 
         var val = PipeMaze.StepsToFarthestPoint(cells);
 
@@ -38,7 +38,7 @@ public class Day10
     [Fact]
     public void Day10_PartTwo_Example1()
     {
-        var cells = Example3Input.Cells();
+        var cells = Example3Input.RowsAndColumns();
 
         var val = PipeMaze.StepsToFarthestPoint(cells, true);
 
@@ -48,7 +48,7 @@ public class Day10
     [Fact]
     public void Day10_PartTwo_Example2()
     {
-        var cells = Example4Input.Cells();
+        var cells = Example4Input.RowsAndColumns();
 
         var val = PipeMaze.StepsToFarthestPoint(cells, true);
 
@@ -58,7 +58,7 @@ public class Day10
     [Fact]
     public void Day10_PartTwo_Example3()
     {
-        var cells = Example5Input.Cells();
+        var cells = Example5Input.RowsAndColumns();
 
         var val = PipeMaze.StepsToFarthestPoint(cells, true);
 
@@ -68,7 +68,7 @@ public class Day10
     [Fact]
     public void Day10_PartTwo_Test()
     {
-        var cells = PuzzleInput.Cells();
+        var cells = PuzzleInput.RowsAndColumns();
 
         var val = PipeMaze.StepsToFarthestPoint(cells, true);
 
